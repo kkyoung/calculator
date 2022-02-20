@@ -28,9 +28,10 @@ namespace calculator
             {
                 count = s.Count(f => f == '+');
                 number = s.Split('+');
+                result = Convert.ToInt32(number[0]);
                 for (int i = 0; i < count + 1; i++)
                 {
-                    result += Convert.ToInt32(number[i]);
+                    result += Convert.ToInt32(number[++i]);
                 }
                 textBox2.Text = result.ToString();
             }
@@ -38,13 +39,19 @@ namespace calculator
             {
                 count = s.Count(f => f == '-');
                 number = s.Split('-');
+                result = Convert.ToInt32(number[0]);
                 for (int i = 0; i < count + 1; i++)
                 {
-                    result -= Convert.ToInt32(number[i]);
+                    result -= Convert.ToInt32(number[++i]);
                 }
                 textBox2.Text = result.ToString();
 
             }
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }
