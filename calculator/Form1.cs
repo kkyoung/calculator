@@ -36,11 +36,58 @@ namespace calculator
             double result=0;
             //*,/ 만들기
             //
+
+            for (int i=0; str[i] != null;i++)
+            {
+                switch (str[i]) {
+                    case '(':
+
+                
+                }
+
+            }
             if (s.Contains("(")){
                 int first = s.IndexOf('(');
                 int second = s.IndexOf(')');
+                string p = s.Substring(first+1,second-1);   //()안 식
+                if (p.Contains("*") && p.Contains("/")) {
+                    indexMulti = p.IndexOf('*');
+                    indexDivision = p.IndexOf('/');
 
+                    if (p.Contains("+"))    indexPlus = p.IndexOf('+');
+                    else indexPlus = 0;
 
+                    if(p.Contains("-")) indexMinus = p.IndexOf('-');
+                    else indexMinus = 0;
+
+                    if (indexMulti<indexDivision)
+                    {
+                        string str2 = RemoveNumber(p);
+                   
+                        for (int i=0; p[i] != null ; i++)
+                        {
+                            switch (str2[i])
+                            {
+                                case '*':
+                                    result = 
+                            }
+                        }
+                        count = p.Count(f => f == '*');
+                        number = p.Split('*');
+                        result =  Convert.ToDouble(number[0]);
+                        if(indexPlus == 0 || indexMinus == 0)
+                        {
+
+                        }
+                    }
+                }
+                else if (p.Contains("*"))
+                {
+
+                }
+                else if (p.Contains("/")){
+
+                }
             }
 
 
