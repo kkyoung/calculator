@@ -21,31 +21,47 @@ namespace calculator
         private void button1_Click(object sender, EventArgs e)
         {
             string s = textBox1.Text;   //식을 문자열로 받을 변수
-            string str = RemoveNumber(s);   //숫자 없앰
-            string multi = "*";
-            string division = "/";
-            string plus = "+";
-            string minus = "-";
-            string[] index = {"+", "-", "*", "/","(",")"};
-            int indexMulti,indexDivision,indexPlus,indexMinus;
+            char[] arrs = s.ToCharArray();  // 문자열을 문자 배열로 변경
+            char[] arrCalc = new char[100];  // arrs를 정리해 배열
+            bool contNum = false;            //두자릿 수 이상 숫자인지
+            int count=0;
+
 
             int strIndex1 = s.LastIndexOf('+');
             int strIndex2 = s.LastIndexOf('-');
             string[] number;                  //+ -를 기준으로 나눠 저장
-            int count;
+            
             double result=0;
             //*,/ 만들기
             //
 
-            for (int i=0; str[i] != null;i++)
+            for (int i=0; i< arrs.Length;i++)
             {
-                switch (str[i]) {
-                    case '(':
-
-                
+                if ((arrs[i]>='0') && (arrs[i]<='9'))
+                {
+                    if (contNum) arrCalc[count] = (arrCalc[count]*10) + double.Parse(arrCalc[i].ToString());
+                    else arrCalc[i] = double.Parse(arrCalc[i].ToString());
+                    
+                    contNum = true;
                 }
-
+                else
+                {
+                    count++;
+                    arrCalc[count] = (arrs[i]);
+                    contNum = false;
+                }
             }
+
+            for (int i=0; i< arrCalc.Length;i++)
+            {
+                int num = int.TryParse(arrCalc[i],out 0);
+                switch (arrCalc[i])
+                {
+
+
+                }
+            }
+
             if (s.Contains("(")){
                 int first = s.IndexOf('(');
                 int second = s.IndexOf(')');
