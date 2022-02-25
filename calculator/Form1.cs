@@ -11,6 +11,13 @@ using System.Text.RegularExpressions;
 
 namespace calculator
 {
+    struct Student {
+    public string name;
+    public int std_num;
+    public int age;
+    };
+
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -23,7 +30,11 @@ namespace calculator
             string s = textBox1.Text;   //식을 문자열로 받을 변수
             char[] arrs = s.ToCharArray();  // 문자열을 문자 배열로 변경
             char[] arrCalc = new char[100];  // arrs를 정리해 배열
+            char[] postfixCalc = new char[100];  //후위표기 배열
+            char[] stack = new char[100];  //후위표기 배열
+
             bool contNum = false;            //두자릿 수 이상 숫자인지
+            bool pointNum = false;
             int count=0;
 
 
@@ -35,26 +46,49 @@ namespace calculator
             //*,/ 만들기
             //
 
+            /*입력 받은 문자열을 숫자와 문자 구분해 배열에 삽입*/
             for (int i=0; i< arrs.Length;i++)
             {
                 if ((arrs[i]>='0') && (arrs[i]<='9'))
                 {
-                    if (contNum) arrCalc[count] = (arrCalc[count]*10) + double.Parse(arrCalc[i].ToString());
-                    else arrCalc[i] = double.Parse(arrCalc[i].ToString());
+                    if (pointNum)
+                    {
+                        for (int j =1;i< arrs.Length;j++,i++)
+                        {
+                            arrCalc[count] = (double.Parse(arrCalc[count].ToString()) + double.Parse(arrs[i].ToString())*(1/ Math.Pow(100,j))).ToString();
+                            if ((arrs[i+1]>='0') && (arrs[i+1]<='9'))   continue;
+                            else break;
+                        }
+                    }
+                    else if (contNum) arrCalc[count] = (double.Parse(arrCalc[count].ToString())*10 + double.Parse(arrs[i].ToString())).ToString;    //두자리 이상인 경우
+                    else arrCalc[count] = arrCalc[i];           //double.Parse(arrCalc[i].ToString())
                     
                     contNum = true;
+                }
+                else if (arrs[i] =='.')     //소수점인 경우
+                {
+                    i++;
+                    arrCalc[count] = (double.Parse(arrCalc[count].ToString()) + double.Parse(arrs[i].ToString())*0.1).ToString();
+                    pointNum = true;
+                    contNum = false;
                 }
                 else
                 {
                     count++;
-                    arrCalc[count] = (arrs[i]);
+                    arrCalc[count] = arrs[i];
                     contNum = false;
+                    pointNum = false;
                 }
             }
-
-            for (int i=0; i< arrCalc.Length;i++)
+            
+            /*후위표기로 바꾸기*/
+            for (int i=0; arrs[i] != null;i++)
             {
-                int num = int.TryParse(arrCalc[i],out 0);
+                bool num = int.TryParse(arrs[i], out 0);
+                if (num)
+                {
+
+                }
                 switch (arrCalc[i])
                 {
 
