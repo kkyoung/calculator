@@ -11,10 +11,9 @@ using System.Text.RegularExpressions;
 
 namespace calculator
 {
-    struct Student {
-    public string name;
-    public int std_num;
-    public int age;
+    struct StackType {
+    public int stack[100];
+    public int top;
     };
 
 
@@ -178,7 +177,9 @@ namespace calculator
             }
 
         }
-
+        public static void init(StackType *s) {
+            s->top = -1;
+        }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
