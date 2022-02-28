@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 namespace calculator
 {
     struct StackType {
-    public int stack[100];
+    public int[] stack = new int[100];
     public int top;
     };
 
@@ -30,16 +30,12 @@ namespace calculator
             char[] arrs = s.ToCharArray();  // 문자열을 문자 배열로 변경
             char[] arrCalc = new char[100];  // arrs를 정리해 배열
             char[] postfixCalc = new char[100];  //후위표기 배열
-            char[] stack = new char[100];  //후위표기 배열
+            //char[] stack = new char[100];  //후위표기 배열
 
             bool contNum = false;            //두자릿 수 이상 숫자인지
             bool pointNum = false;
             int count=0;
 
-
-            int strIndex1 = s.LastIndexOf('+');
-            int strIndex2 = s.LastIndexOf('-');
-            string[] number;                  //+ -를 기준으로 나눠 저장
             
             double result=0;
             //*,/ 만들기
@@ -80,106 +76,66 @@ namespace calculator
                 }
             }
             
-            /*후위표기로 바꾸기*/
-            for (int i=0; arrs[i] != null;i++)
-            {
-                bool num = int.TryParse(arrs[i], out 0);
-                if (num)
-                {
-
-                }
-                switch (arrCalc[i])
-                {
-
-
-                }
-            }
-
-            if (s.Contains("(")){
-                int first = s.IndexOf('(');
-                int second = s.IndexOf(')');
-                string p = s.Substring(first+1,second-1);   //()안 식
-                if (p.Contains("*") && p.Contains("/")) {
-                    indexMulti = p.IndexOf('*');
-                    indexDivision = p.IndexOf('/');
-
-                    if (p.Contains("+"))    indexPlus = p.IndexOf('+');
-                    else indexPlus = 0;
-
-                    if(p.Contains("-")) indexMinus = p.IndexOf('-');
-                    else indexMinus = 0;
-
-                    if (indexMulti<indexDivision)
-                    {
-                        string str2 = RemoveNumber(p);
-                   
-                        for (int i=0; p[i] != null ; i++)
-                        {
-                            switch (str2[i])
-                            {
-                                case '*':
-                                    result = 
-                            }
-                        }
-                        count = p.Count(f => f == '*');
-                        number = p.Split('*');
-                        result =  Convert.ToDouble(number[0]);
-                        if(indexPlus == 0 || indexMinus == 0)
-                        {
-
-                        }
-                    }
-                }
-                else if (p.Contains("*"))
-                {
-
-                }
-                else if (p.Contains("/")){
-
-                }
-            }
-
-
-            if (s.Contains("*") && s.Contains("/")) {
-                indexMulti = s.IndexOf('*');
-                indexDivision = s.IndexOf('/');
-                if (indexMulti<indexDivision)
-                {
-                    count = s.Count(f => f == '*');
-                    number = s.Split('*');
-                    result =  Convert.ToDouble(number[0]);
-
-
-                }
-            }
-            if (s.Contains("+"))
-            {
-                count = s.Count(f => f == '+');
-                number = s.Split('+');
-                result = Convert.ToDouble(number[0]);
-                for (int i = 0; i < count + 1; i++)
-                {
-                    result += Convert.ToDouble(number[++i]);
-                }
-                textBox2.Text = result.ToString();
-            }
-            else if (s.Contains("-"))
-            {
-                count = s.Count(f => f == '-');
-                number = s.Split('-');
-                result = Convert.ToDouble(number[0]);
-                for (int i = 0; i < count + 1; i++)
-                {
-                    result -= Convert.ToDouble(number[++i]);
-                }
-                textBox2.Text = result.ToString();
-
-            }
-
+            
         }
         public static void init(StackType *s) {
             s->top = -1;
         }
+
+        public static void pop()
+        {
+
+        }
+
+        public static void push(StackType *s,char item)
+        {
+            s->stack[++(s->top)] = item;
+        }
+        public static void prec(char item)
+        {
+            switch (item)
+            {
+                case '*': case '/':
+                    return 1;
+                case '+': case '-':
+                    return 2;
+            }
+        }
+
+        public static void infix_to_postfix(char exp[],char cexp[])     //중위식배열,후위식배열
+        {          
+            int j=0;
+            StackType s;
+            init(&s);
+
+            /*후위표기로 바꾸기*/
+            for (int i=0; exp[i] != null;i++)
+            {
+                //bool num = int.TryParse(arrs[i], out 0);
+                /*if (num)
+                {
+                    postfixCalc[i] = arrs[i];   숫자는 스위치 디폴트로
+                }*/ 
+                switch (arrCalc[i])
+                {
+                    case '(':
+                        push(&s,'(');
+                        break;
+                    case ')':
+
+
+                    
+                    default:    //숫자
+                        cexp[j] = exp[i];
+                        j++;
+                        break;
+
+                }
+            }
+
+        }
+
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
